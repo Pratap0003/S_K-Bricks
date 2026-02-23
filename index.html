@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sarthak Bricks Producer & Supplier</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Old Money Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Libre+Baskerville&display=swap" rel="stylesheet">
+
+<!-- jsPDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+:root{
+  --royal:#4a0d12;
+  --gold:#c2a14a;
+  --paper:#f7f2e8;
+  --ink:#1f1f1f;
+}
+
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Libre Baskerville', serif;
+  line-height:1.6;
+  padding-bottom:90px;
+}
+
+header{
+  background:var(--royal);
+  color:#fff;
+  text-align:center;
+  padding:30px 20px 35px;
+  border-bottom:6px solid var(--gold);
+}
+
+.logo{
+  max-width:220px;
+  margin:0 auto;
+}
+
+.logo img{
+  width:100%;
+  height:auto;
+}
+
+.since{
+  color:var(--gold);
+  font-family:'Cinzel', serif;
+  letter-spacing:1.5px;
+  margin-top:6px;
+  font-size:15px;
+}
+
+h1{
+  font-family:'Cinzel', serif;
+  letter-spacing:2px;
+  margin:15px 0 5px;
+}
+
+.subtitle{
+  color:var(--gold);
+  font-size:14px;
+}
+
+section{
+  max-width:1100px;
+  margin:auto;
+  padding:35px 20px;
+}
+
+.card{
+  background:#fff;
+  border:1px solid #d8d1c4;
+  padding:25px;
+  margin-bottom:30px;
+}
+
+h2{
+  font-family:'Cinzel', serif;
+  color:var(--royal);
+  border-bottom:2px solid var(--gold);
+  padding-bottom:6px;
+}
+
+ul{
+  margin:0;
+  padding-left:20px;
+}
+
+li{
+  margin-bottom:10px;
+}
+
+label{
+  display:block;
+  margin-top:12px;
+  font-weight:bold;
+}
+
+input{
+  width:100%;
+  padding:10px;
+  margin-top:6px;
+  border:1px solid #aaa;
+  font-family:inherit;
+}
+
+button{
+  background:var(--royal);
+  color:#fff;
+  border:none;
+  padding:12px 18px;
+  margin-top:20px;
+  cursor:pointer;
+  font-family:'Cinzel', serif;
+}
+
+button:hover{
+  background:#2e070b;
+}
+
+.invoice{
+  display:none;
+  margin-top:20px;
+  border-top:1px solid #ccc;
+  padding-top:15px;
+}
+
+a{
+  color:var(--royal);
+  font-weight:bold;
+  text-decoration:none;
+}
+
+a:hover{
+  text-decoration:underline;
+}
+
+footer{
+  background:#1b1b1b;
+  color:#ccc;
+  text-align:center;
+  padding:15px;
+  font-size:13px;
+}
+
+/* Bottom Bar */
+.bottom-bar{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  background:var(--royal);
+  display:flex;
+  justify-content:space-around;
+  padding:12px 0;
+  border-top:3px solid var(--gold);
+  z-index:999;
+}
+
+.bottom-bar a{
+  color:#fff;
+  font-family:'Cinzel', serif;
+  font-size:14px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">
+    <img src="WhatsApp Image 2026-02-23 at 3.00.28 PM.jpeg" alt="SK Bricks Logo">
+  </div>
+  <div class="since">Since 1980</div>
+  <h1>SARTHAK BRICKS</h1>
+  <div class="subtitle">Producer & Supplier • Family Business</div>
+</header>
+
+<section class="card">
+<h2>Business Identity</h2>
+<ul>
+  <li>Business Name: Sarthak Bricks Producer & Supplier</li>
+  <li>Established: 1980</li>
+  <li>Owners: Krushna R Kale, Harichand R Kale</li>
+  <li>Location: Yesgaon, Gangapur, Chh. Sambhajinagar – 431133</li>
+</ul>
+</section>
+
+<section class="card">
+<h2>Pricing Policy</h2>
+<ul>
+  <li>₹13,000 per 1,000 bricks</li>
+  <li>Base delivery distance: 10 km</li>
+  <li>Additional ₹200 per extra 2 km</li>
+</ul>
+</section>
+
+<section class="card">
+<h2>Place an Order</h2>
+
+<label>Customer Name</label>
+<input id="customerName">
+
+<label>Mobile Number</label>
+<input id="customerMobile">
+
+<label>Quantity (in thousands)</label>
+<input type="number" id="qty">
+
+<label>Distance from Yesgaon (km)</label>
+<input type="number" id="distance">
+
+<button onclick="processOrder()">Generate Invoice</button>
+
+<div class="invoice" id="invoice">
+<ul>
+  <li>Quantity: <b><span id="iQty"></span> thousand bricks</b></li>
+  <li>Total Amount: <b>₹<span id="iTotal"></span></b></li>
+</ul>
+
+<button onclick="downloadInvoicePDF()">Download Royal Invoice (PDF)</button>
+<button onclick="sendWhatsApp()">Send Order via WhatsApp</button>
+</div>
+</section>
+
+<section class="card">
+<h2>Contact</h2>
+<ul>
+  <li>Office: <a href="tel:+919021177171">+91 90211 77171</a></li>
+  <li>Email: <a href="mailto:skbricks045@gmail.com">skbricks045@gmail.com</a></li>
+  <li>
+    Location:
+    <a href="https://maps.app.goo.gl/qoHyDSpw7CoJ5vBj6" target="_blank">
+      View on Google Maps
+    </a>
+  </li>
+</ul>
+</section>
+
+<footer>
+© Since 1980 — Sarthak Bricks Producer & Supplier
+</footer>
+
+<div class="bottom-bar">
+  <a href="tel:+919021177171">📞 Call</a>
+  <a href="https://wa.me/919021177171" target="_blank">💬 WhatsApp</a>
+  <a href="https://maps.app.goo.gl/qoHyDSpw7CoJ5vBj6" target="_blank">📍 Map</a>
+</div>
+
+<script>
+const BASE_PRICE = 13000;
+const { jsPDF } = window.jspdf;
+
+let logoImage = new Image();
+logoImage.src = "WhatsApp Image 2026-02-23 at 3.00.28 PM.jpeg";
+
+function processOrder(){
+  const q = parseInt(qty.value);
+  const d = parseInt(distance.value);
+  const extra = d > 10 ? Math.ceil((d - 10) / 2) * 200 : 0;
+  const total = q * BASE_PRICE + extra;
+
+  iQty.innerText = q;
+  iTotal.innerText = total;
+  invoice.style.display = "block";
+}
+
+function sendWhatsApp(){
+  const name = customerName.value.trim();
+  const mobile = customerMobile.value.trim();
+
+  if(!name || !mobile){
+    alert("Please enter customer name and mobile number.");
+    return;
+  }
+
+  const msg =
+`Brick Order Request
+Customer Name: ${name}
+Mobile: ${mobile}
+Quantity: ${qty.value} Thousand
+Total Amount: ₹${iTotal.innerText}`;
+
+  window.open(
+    `https://wa.me/919021177171?text=${encodeURIComponent(msg)}`,
+    "_blank"
+  );
+}
+
+function downloadInvoicePDF(){
+  const pdf = new jsPDF();
+
+  pdf.saveGraphicsState();
+  pdf.setGState(new pdf.GState({ opacity: 0.08 }));
+  pdf.addImage(logoImage, "JPEG", 35, 80, 140, 140);
+  pdf.restoreGraphicsState();
+
+  pdf.setFont("Times","Bold");
+  pdf.setFontSize(18);
+  pdf.text("SARTHAK BRICKS PRODUCER & SUPPLIER",105,25,{align:"center"});
+
+  pdf.setFontSize(11);
+  pdf.setFont("Times","Normal");
+  pdf.text("Family Business • Established 1980",105,32,{align:"center"});
+
+  pdf.line(20,36,190,36);
+
+  pdf.text("Contact: +91 90211 77171",20,45);
+  pdf.text("Email: skbricks045@gmail.com",20,52);
+
+  pdf.textWithLink(
+    "Google Maps Location",
+    20,59,
+    { url:"https://maps.app.goo.gl/qoHyDSpw7CoJ5vBj6" }
+  );
+
+  pdf.line(20,65,190,65);
+
+  pdf.text(`Customer Name : ${customerName.value}`,20,78);
+  pdf.text(`Mobile        : ${customerMobile.value}`,20,86);
+  pdf.text(`Quantity      : ${qty.value} Thousand`,20,94);
+  pdf.text(`Total Amount  : ₹${iTotal.innerText}`,20,102);
+
+  pdf.text("Authorized Signatory",140,140);
+  pdf.text("Sarthak Bricks",140,147);
+
+  pdf.setFont("Times","Italic");
+  pdf.text(
+    "Thank you for placing your trust in a family enterprise built on strength, integrity, and time.",
+    105,185,{align:"center",maxWidth:160}
+  );
+
+  pdf.save("Sarthak_Bricks_Royal_Invoice.pdf");
+}
+</script>
+
+</body>
+</html> 
